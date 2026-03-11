@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 //this declares the transaction object and defines the fields
+//type alias : lets you enforce the shape of data
 type Transaction = {
   amount: string;
   description: string;
@@ -27,6 +28,7 @@ export default function TransactionForm() {
   });
 
   function handleChange(
+    //"e is a change event, triggered by either an input field or a select dropdown" (typescript)
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
   ) {
     setForm({ ...form, [e.target.name]: e.target.value });
@@ -35,6 +37,8 @@ export default function TransactionForm() {
   function handleSubmit(e: React.SyntheticEvent) {
     e.preventDefault();
     console.log("Transaction submitted:", form);
+    // later this is where you'd call your Node/Express API:
+    // await fetch("/api/transactions", { method: "POST", body: form })
   }
 
   return (
