@@ -1,73 +1,82 @@
-# React + TypeScript + Vite
+# Budget Dashboard
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A modern full-stack budgeting dashboard built to demonstrate practical product development skills with React.
 
-Currently, two official plugins are available:
+The project focuses on building a real-world application that processes financial transaction data and presents meaningful summaries to the user.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+---
 
-## React Compiler
+## Learning Goals
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+This project is also being used as a hands-on way to learn and get comfortable with a modern frontend tech stack — including **TypeScript**, **React**, and **Vite**.
 
-## Expanding the ESLint configuration
+Rather than following tutorials in isolation, the goal is to learn by building something real. That means encountering genuine problems, understanding why tools like TypeScript exist, and picking up the stack incrementally as the project grows.
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+If you're reading this and you're also learning — the code in this repo reflects that process, including the questions and the figuring-it-out along the way.
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+---
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+## Tech Stack
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+### Frontend
+- React
+- TypeScript
+- Vite
+
+### Backend (planned)
+- Node.js
+- Express
+
+### Database (planned)
+- PostgreSQL
+
+---
+
+## Purpose of This Project
+
+This project is being developed as a practical full-stack portfolio application.
+
+It demonstrates the ability to:
+- Build modern React interfaces
+- Manage application state
+- Transform and summarize data
+- Build simple REST APIs
+- Store and retrieve data from a database
+
+---
+
+## Core Features
+- Add and categorize transactions
+- View a running list of spending
+- Calculate totals by category
+- Display summarized financial data
+
+---
+
+## Development Approach
+
+The application is built incrementally:
+
+1. Frontend interface and transaction state
+2. Data transformation logic (totals and summaries)
+3. Backend API
+4. Database persistence
+
+---
+
+## Running the Project
+
+Install dependencies:
+```
+npm install
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+Start development server:
+```
+npm run dev
+```
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+The app will run at:
+```
+http://localhost:5173
 ```
