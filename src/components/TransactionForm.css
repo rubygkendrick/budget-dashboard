@@ -1,0 +1,192 @@
+/* ============================================
+   TransactionForm.css — Component styles only
+   ============================================ */
+
+/* --- Page Layout --- */
+.transaction-page {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: var(--space-lg);
+  }
+  
+  /* --- Card --- */
+  .transaction-card {
+    background: var(--color-neon-yellow);
+    border: var(--border-chunky);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-card);
+    padding: var(--space-xl);
+    width: 100%;
+    max-width: 480px;
+  }
+  
+  /* --- Header --- */
+  .transaction-header {
+    margin-bottom: var(--space-lg);
+  }
+  
+  .transaction-header__title {
+    font-family: var(--font-sans);
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--color-text-primary);
+    letter-spacing: -0.01em;
+    margin: 0 0 var(--space-xs) 0;
+    text-transform: lowercase;
+  }
+  
+  .transaction-header__subtitle {
+    font-size: 0.95rem;
+    font-weight: 400;
+    color: #444444;
+    margin: 0;
+    text-transform: lowercase;
+  }
+  
+  /* --- Form --- */
+  .transaction-form {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-md);
+  }
+  
+  .form-field {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-xs);
+  }
+  
+  .form-field__label {
+    font-size: 0.8rem;
+    font-weight: 600;
+    text-transform: lowercase;
+    letter-spacing: 0.03em;
+    color: #333333;
+  }
+  
+  .form-field__input {
+    font-family: var(--font-sans);
+    font-size: 1rem;
+    font-weight: 500;
+    color: var(--color-text-primary);
+    background: #ffffff;
+    border: var(--border-chunky);
+    border-radius: var(--radius-sm);
+    box-shadow: var(--shadow-input);
+    padding: 12px var(--space-md);
+    outline: none;
+    transition: box-shadow var(--transition-fast), transform var(--transition-fast);
+    width: 100%;
+  }
+  
+  .form-field__input::placeholder {
+    color: #aaaaaa;
+    font-weight: 400;
+  }
+  
+  .form-field__input:focus {
+    box-shadow: 3px 3px 0px #000, 0 0 0 3px var(--color-neon-green);
+    transform: translate(-1px, -1px);
+  }
+  
+  .form-field__input--amount {
+    font-family: var(--font-mono);
+    font-size: 1.3rem;
+    font-weight: 600;
+  }
+  
+  .form-field__select {
+    appearance: none;
+    cursor: pointer;
+    background-color: #ffffff;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23111111' d='M6 8L1 3h10z'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 14px center;
+    padding-right: 36px;
+  }
+  
+  .form-field__input--error {
+    border-color: var(--color-danger);
+    box-shadow: 3px 3px 0px var(--color-danger);
+  }
+  
+  .form-field__error {
+    font-size: 0.75rem;
+    color: #cc0000;
+    font-weight: 600;
+  }
+  
+  /* --- Divider --- */
+  .transaction-divider {
+    height: 2px;
+    background: #00000022;
+    border-radius: 2px;
+    margin: var(--space-xs) 0;
+  }
+  
+  /* --- Button --- */
+  .transaction-btn {
+    font-family: var(--font-sans);
+    font-size: 1.1rem;
+    font-weight: 700;
+    text-transform: lowercase;
+    color: var(--color-text-primary);
+    background: #111111;
+    color: #ffffff;
+    border: var(--border-chunky);
+    border-radius: var(--radius-pill);
+    box-shadow: var(--shadow-btn);
+    padding: 14px var(--space-lg);
+    margin-top: var(--space-sm);
+    cursor: pointer;
+    width: 100%;
+    transition: transform var(--transition-fast), box-shadow var(--transition-fast);
+  }
+  
+  .transaction-btn:hover {
+    transform: translate(-2px, -2px);
+    box-shadow: 5px 5px 0px #000000;
+  }
+  
+  .transaction-btn:active {
+    transform: translate(1px, 1px);
+    box-shadow: 1px 1px 0px #000000;
+  }
+  
+  .transaction-btn:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: var(--shadow-btn);
+  }
+  
+  /* --- Status Banners --- */
+  .transaction-status {
+    padding: 10px var(--space-md);
+    border-radius: var(--radius-sm);
+    border: var(--border-chunky);
+    font-size: 0.875rem;
+    font-weight: 600;
+    text-transform: lowercase;
+    margin-top: var(--space-sm);
+  }
+  
+  .transaction-status--success {
+    background: var(--color-neon-green);
+    color: #111111;
+  }
+  
+  .transaction-status--error {
+    background: var(--color-neon-pink);
+    color: #111111;
+  }
+  
+  /* --- Responsive --- */
+  @media (max-width: 520px) {
+    .transaction-card {
+      padding: var(--space-lg);
+      border-radius: var(--radius-md);
+    }
+  }

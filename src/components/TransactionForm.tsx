@@ -1,6 +1,7 @@
 // src/components/TransactionForm.tsx
 
 import { useState } from "react";
+import "./TransactionForm.css";
 //this declares the transaction object and defines the fields
 //type alias : lets you enforce the shape of data
 type Transaction = {
@@ -42,36 +43,74 @@ export default function TransactionForm() {
   }
 
   return (
-    <form onSubmit={handleSubmit}>
-      <input
-        name="amount"
-        type="number"
-        placeholder="Amount"
-        value={form.amount}
-        onChange={handleChange}
-      />
-      <input
-        name="description"
-        type="text"
-        placeholder="Description"
-        value={form.description}
-        onChange={handleChange}
-      />
-      <select name="category" value={form.category} onChange={handleChange}>
-        <option value="">Select a category</option>
-        {CATEGORIES.map((cat) => (
-          <option key={cat} value={cat}>
-            {cat}
-          </option>
-        ))}
-      </select>
-      <input
-        name="date"
-        type="date"
-        value={form.date}
-        onChange={handleChange}
-      />
-      <button type="submit">Add Transaction</button>
-    </form>
+    <div className="transaction-page">
+    <div className="transaction-card">
+  
+      <div className="transaction-header">
+        <h1 className="transaction-header__title">New Transaction</h1>
+        <p className="transaction-header__subtitle">Record a new expense or payment</p>
+      </div>
+  
+      <form className="transaction-form" onSubmit={handleSubmit}>
+  
+        <div className="form-field">
+          <label className="form-field__label">Amount</label>
+          <input
+            className="form-field__input form-field__input--amount"
+            name="amount"
+            type="number"
+            placeholder="0.00"
+            value={form.amount}
+            onChange={handleChange}
+          />
+        </div>
+  
+        <div className="form-field">
+          <label className="form-field__label">Description</label>
+          <input
+            className="form-field__input"
+            name="description"
+            type="text"
+            placeholder="What was this for?"
+            value={form.description}
+            onChange={handleChange}
+          />
+        </div>
+  
+        <div className="form-field">
+          <label className="form-field__label">Category</label>
+          <select
+            className="form-field__input form-field__select"
+            name="category"
+            value={form.category}
+            onChange={handleChange}
+          >
+            <option value="">Select a category</option>
+            {CATEGORIES.map((cat) => (
+              <option key={cat} value={cat}>{cat}</option>
+            ))}
+          </select>
+        </div>
+  
+        <div className="form-field">
+          <label className="form-field__label">Date</label>
+          <input
+            className="form-field__input"
+            name="date"
+            type="date"
+            value={form.date}
+            onChange={handleChange}
+          />
+        </div>
+  
+        <div className="transaction-divider" />
+  
+        <button className="transaction-btn" type="submit">
+          Add Transaction
+        </button>
+  
+      </form>
+    </div>
+  </div>
   );
 }
