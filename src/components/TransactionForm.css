@@ -4,12 +4,11 @@
 
 /* --- Page Layout --- */
 .transaction-page {
-    min-height: 100vh;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: var(--space-lg);
-  }
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 2rem 1rem;
+}
   
   /* --- Card --- */
   .transaction-card {
@@ -189,4 +188,48 @@
       padding: var(--space-lg);
       border-radius: var(--radius-md);
     }
+  }
+  .transaction-list {
+    margin: 32px auto 0 auto;
+    max-width: 900px;
+    width: 90%;
+    background: var(--color-text-primary);
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.07);
+    padding: 24px 0;
+  }
+  
+  .transaction-list__title {
+    text-align: left;
+    margin: 0 0 16px 24px;
+    font-size: 1.3rem;
+    font-weight: 600;
+  }
+  
+  .transaction-list__row {
+    display: grid;
+    grid-template-columns: 1.5fr 3fr 2fr 1.5fr;
+    align-items: center;
+    padding: 12px 24px;
+    border-bottom: 1px solid #ffffff;
+    font-size: 1rem;
+    background: #ffffff;
+    color: var(--color-text-primary);
+  }
+  
+  .transaction-list__row--header {
+    background: var(--color-neon-pink);
+    font-weight: bold;
+    border-radius: 8px;
+  }
+  
+  .transaction-list__row:last-child {
+    border-bottom: none;
+    
+  }
+  
+  .transaction-list__row span {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
   }

@@ -28,6 +28,8 @@ export default function TransactionForm() {
     date: "",
   });
 
+  const [transactions, setTransactions] = useState<Transaction[]>([]);
+
   function handleChange(
     //"e is a change event, triggered by either an input field or a select dropdown" (typescript)
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
@@ -37,9 +39,12 @@ export default function TransactionForm() {
 
   function handleSubmit(e: React.SyntheticEvent) {
     e.preventDefault();
+    setTransactions([form, ...transactions]);
+    setForm({ amount: "", description: "", category: "", date: "" });
     console.log("Transaction submitted:", form);
     // later this is where you'd call your Node/Express API:
     // await fetch("/api/transactions", { method: "POST", body: form })
+
   }
 
   return (
@@ -111,6 +116,30 @@ export default function TransactionForm() {
   
       </form>
     </div>
+         {/* 3. Transaction list — only renders once there's at least one entry */}
+         {transactions.length > 0 && ( 
+        <div className="transaction-list">
+          <h2 className="transaction-list__title">Transactions</h2>
+
+          {/* Header row */}
+          <div className="transaction-list__row transaction-list__row--header">
+            <span>Date</span>
+            <span>Description</span>
+            <span>Category</span>
+            <span>Amount</span>
+          </div>
+
+          {/* Data rows */}
+          {transactions.map((t, i) => (
+            <div key={i} className="transaction-list__row">
+              <span>{t.date}</span>
+              <span>{t.description}</span>
+              <span>{t.category}</span>
+              <span>${parseFloat(t.amount).toFixed(2)}</span>
+            </div>
+          ))}
+        </div>
+      )}
   </div>
   );
 }
