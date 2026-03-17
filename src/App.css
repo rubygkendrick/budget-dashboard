@@ -20,14 +20,21 @@
 .app-title__letter--3 {
   color: var(--color-neon-pink);
 }
-
 .app-title {
   font-family: var(--font-sans);
   font-size: 3rem;
   font-weight: 700;
   text-transform: lowercase;
-  margin: var(--space-xl) 0 0 0;
-  width: 480px;
   text-align: center;
   letter-spacing: 0.02em;
+  margin: 0;
+  padding: var(--space-xl) 0 var(--space-xl) 0;
+
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 100;
+  background-color:  #111111;
+
 }
