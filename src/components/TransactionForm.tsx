@@ -2,15 +2,14 @@
 
 import { useState } from "react";
 import "./TransactionForm.css";
-//this declares the transaction object and defines the fields
-//type alias : lets you enforce the shape of data
+
 type Transaction = {
   amount: string;
   description: string;
   category: string;
   date: string;
 };
-//this defines the categories objects and the fields....
+
 const CATEGORIES = [
   "Groceries",
   "Rent",
@@ -29,9 +28,11 @@ export default function TransactionForm() {
   });
 
   const [transactions, setTransactions] = useState<Transaction[]>([]);
+  const sortedTransactions = [...transactions].sort(
+    (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()
+  );
 
   function handleChange(
-    //"e is a change event, triggered by either an input field or a select dropdown" (typescript)
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
   ) {
     setForm({ ...form, [e.target.name]: e.target.value });
@@ -127,10 +128,8 @@ export default function TransactionForm() {
             <span>Description</span>
             <span>Category</span>
             <span>Amount</span>
-          </div>
-
-          {/* Data rows */}
-          {transactions.map((t, i) => (
+           </div>
+          {sortedTransactions.map((t, i) => (
             <div key={i} className="transaction-list__row">
               <span>{t.date}</span>
               <span>{t.description}</span>
