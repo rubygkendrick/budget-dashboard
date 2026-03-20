@@ -1,18 +1,6 @@
 # Budget Dashboard
 
-A modern full-stack budgeting dashboard built to demonstrate practical product development skills with React.
-
-The project focuses on building a real-world application that processes financial transaction data and presents meaningful summaries to the user.
-
----
-
-## Learning Goals
-
-This project is also being used as a hands-on way to learn and get comfortable with a modern frontend tech stack — including **TypeScript**, **React**, and **Vite**.
-
-Rather than following tutorials in isolation, the goal is to learn by building something real. That means encountering genuine problems, understanding why tools like TypeScript exist, and picking up the stack incrementally as the project grows.
-
-If you're reading this and you're also learning — the code in this repo reflects that process, including the questions and the figuring-it-out along the way.
+A full-stack budgeting application for tracking transactions, managing budgets, setting savings goals, and getting AI-powered insights into spending.
 
 ---
 
@@ -23,60 +11,103 @@ If you're reading this and you're also learning — the code in this repo reflec
 - TypeScript
 - Vite
 
-### Backend (planned)
+### Backend
 - Node.js
 - Express
+- TypeScript
 
-### Database (planned)
-- PostgreSQL
-
----
-
-## Purpose of This Project
-
-This project is being developed as a practical full-stack portfolio application.
-
-It demonstrates the ability to:
-- Build modern React interfaces
-- Manage application state
-- Transform and summarize data
-- Build simple REST APIs
-- Store and retrieve data from a database
+### Database
+- PostgreSQL 16
+- Prisma ORM
 
 ---
 
-## Core Features
-- Add and categorize transactions
-- View a running list of spending
-- Calculate totals by category
-- Display summarized financial data
+## Features
+
+- User authentication with JWT
+- Account management (checking, savings, credit, cash)
+- Income, expense, and transfer transactions
+- Recurring transaction templates
+- Custom categories and subcategories
+- Budget limits per category and time period
+- Savings goals with progress tracking
+- Reports and spending charts
+- AI chat assistant for financial queries
 
 ---
 
-## Development Approach
+## Project Structure
+```
+budget-dashboard/
+├── src/                  # React frontend
+│   ├── components/
+│   ├── App.tsx
+│   └── main.tsx
+├── backend/              # Node.js + Express API
+│   ├── src/
+│   │   └── index.ts
+│   ├── prisma/
+│   │   ├── schema.prisma
+│   │   └── migrations/
+│   ├── .env
+│   └── package.json
+├── package.json
+└── vite.config.ts
+```
 
-The application is built incrementally:
+---
 
-1. Frontend interface and transaction state
-2. Data transformation logic (totals and summaries)
-3. Backend API
-4. Database persistence
+## Database Schema
+
+11 models: `User` · `Account` · `Category` · `Transaction` · `RecurringTemplate` · `Tag` · `TransactionTag` · `Budget` · `Goal` · `Conversation` · `Message`
 
 ---
 
 ## Running the Project
 
-Install dependencies:
+### Frontend
 ```
 npm install
-```
-
-Start development server:
-```
 npm run dev
 ```
+Runs at `http://localhost:5173`
 
-The app will run at:
+### Backend
 ```
-http://localhost:5173
+cd backend
+npm install
+npm run dev
 ```
+Runs at `http://localhost:5000`
+
+### Database
+```
+cd backend
+npx prisma migrate dev
+```
+
+---
+
+## Environment Variables
+
+Create `backend/.env`:
+```
+PORT=5000
+DATABASE_URL="postgresql://user:password@localhost:5432/budget_app"
+JWT_SECRET=your_secret_key
+```
+
+Never commit `.env` to version control.
+
+---
+
+## Development Progress
+
+1. Project setup — React, Vite, TypeScript
+2. Backend scaffolding — Node.js, Express, TypeScript
+3. Database — PostgreSQL + Prisma schema and migration
+4. Auth — register, login, JWT middleware
+5. Accounts, Categories, Transactions
+6. Recurring Templates, Budgets, Goals
+7. Reports and data visualization
+8. AI Assistant
