@@ -1,22 +1,18 @@
-import TransactionForm from "./components/TransactionForm";
-
-import "./App.css";
+import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
+import { AuthProvider } from './context/AuthContext';
+import LoginPage from './pages/LoginPage';
+import './App.css';
 
 function App() {
   return (
-    <div>
-      <h1 className="app-title">
-        {"budget dashboard".split("").map((char, i) => (
-          <span
-            key={i}
-            className={`app-title__letter app-title__letter--${i % 4}`}
-          >
-            {char === " " ? "\u00A0" : char}
-          </span>
-        ))}
-      </h1>
-      <TransactionForm />
-    </div>
+    <AuthProvider>
+      <BrowserRouter>
+        <Routes>
+          <Route path="/login" element={<LoginPage />} />
+          <Route path="*" element={<Navigate to="/login" />} />
+        </Routes>
+      </BrowserRouter>
+    </AuthProvider>
   );
 }
 
