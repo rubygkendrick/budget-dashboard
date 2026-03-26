@@ -1,4 +1,4 @@
-// Register page — allows new users to create an account with their name, email, and password.
+// Register page allows new users to create an account with their name, email, and password.
 import { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';

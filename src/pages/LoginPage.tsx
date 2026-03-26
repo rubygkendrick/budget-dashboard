@@ -1,4 +1,4 @@
-// Login page — allows existing users to sign in with email and password and receive a JWT token.
+// Login page: allows existing users to sign in with email and password and receive a JWT token.
 import { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
