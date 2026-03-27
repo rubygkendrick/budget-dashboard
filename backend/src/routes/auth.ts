@@ -2,6 +2,7 @@ import { Router, Request, Response } from 'express';
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 import { v4 as uuidv4 } from 'uuid';
+import { requireAuth, AuthRequest } from '../middleware/auth';
 import prisma from '../db';
 
 const router = Router();
@@ -71,5 +72,36 @@ router.post('/login', async (req: Request, res: Response) => {
     return res.status(500).json({ error: 'Server error' });
   }
 });
+
+
+// GET /api/auth/me
+router.get('/me', requireAuth, async (req: AuthRequest, res: Response) => {
+  try {
+    const user = await prisma.user.findUnique({
+      where: { id: req.userId },
+      select: { id: true, name: true, email: true, createdAt: true },
+    });
+    if (!user) return res.status(404).json({ error: 'User not found' });
+    return res.json(user);
+  } catch (err) {
+    return res.status(500).json({ error: 'Server error' });
+  }
+});
+
+// PUT /api/auth/me
+router.put('/me', requireAuth, async (req: AuthRequest, res: Response) => {
+  const { name, email } = req.body;
+  try {
+    const user = await prisma.user.update({
+      where: { id: req.userId },
+      data: { name, email },
+      select: { id: true, name: true, email: true },
+    });
+    return res.json(user);
+  } catch (err) {
+    return res.status(500).json({ error: 'Server error' });
+  }
+});
+
 
 export default router;
