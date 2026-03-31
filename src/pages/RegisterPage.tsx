@@ -2,6 +2,7 @@
 import { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
+import AppTitle from '../components/AppTitle';
 
 export default function RegisterPage() {
   const { login } = useAuth();
@@ -38,15 +39,7 @@ export default function RegisterPage() {
 
   return (
     <div style={styles.container}>
-
-      <h1 style={styles.appTitle}>
-        {'budget dashboard'.split('').map((char, i) => (
-          <span key={i} style={{ color: titleColors[i % 4] }}>
-            {char === ' ' ? '\u00A0' : char}
-          </span>
-        ))}
-      </h1>
-
+    <AppTitle />
       <div style={styles.card}>
         <h2 style={styles.title}>Create an account</h2>
 
@@ -89,12 +82,6 @@ export default function RegisterPage() {
   );
 }
 
-const titleColors = [
-  'var(--color-neon-yellow)',
-  '#ffffff',
-  'var(--color-neon-green)',
-  'var(--color-neon-pink)',
-];
 
 const styles: Record<string, React.CSSProperties> = {
   container: {
@@ -105,14 +92,6 @@ const styles: Record<string, React.CSSProperties> = {
     alignItems: 'center',
     justifyContent: 'center',
     gap: '24px',
-  },
-  appTitle: {
-    fontFamily: 'var(--font-sans)',
-    fontSize: '3rem',
-    fontWeight: 700,
-    textTransform: 'lowercase',
-    letterSpacing: '0.02em',
-    margin: 0,
   },
   card: {
     backgroundColor: 'var(--color-bg-card)',

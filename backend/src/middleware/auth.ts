@@ -4,7 +4,8 @@ import jwt from 'jsonwebtoken';
 export interface AuthRequest extends Request {
   userId?: string;
 }
-
+//Every time a request hits a protected route, this function
+// runs first and checks "does this person have a valid JWT?" before letting them through.
 export function requireAuth(req: AuthRequest, res: Response, next: NextFunction) {
   const authHeader = req.headers.authorization;
 
