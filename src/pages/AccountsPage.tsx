@@ -18,6 +18,9 @@ export default function AccountsPage() {
   const [type, setType] = useState("checking");
   const [balance, setBalance] = useState("");
   const [error, setError] = useState("");
+  const [editingId, setEditingId] = useState<string | null>(null);
+  const [editName, setEditName] = useState("");
+  const [editType, setEditType] = useState("");
 
   useEffect(() => {
     async function fetchAccounts() {
@@ -31,9 +34,9 @@ export default function AccountsPage() {
         console.error(err);
       }
     }
-
     fetchAccounts();
   }, [token]);
+
   async function handleCreate(e: React.SyntheticEvent) {
     e.preventDefault();
     setError("");
@@ -64,6 +67,38 @@ export default function AccountsPage() {
     }
   }
 
+  async function handleDelete(id: string) {
+    try {
+      await fetch(`http://localhost:5000/api/accounts/${id}`, {
+        method: "DELETE",
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      setAccounts(accounts.filter((account) => account.id !== id));
+    } catch (err) {
+      console.error(err);
+    }
+  }
+
+  async function handleUpdate(id: string, name: string, type: string) {
+    try {
+      await fetch(`http://localhost:5000/api/accounts/${id}`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({ name, type }),
+      });
+      setAccounts(
+        accounts.map((account) =>
+          account.id === id ? { ...account, name, type } : account,
+        ),
+      );
+    } catch (err) {
+      console.error(err);
+    }
+  }
+
   return (
     <div style={styles.container}>
       <AppTitle />
@@ -77,13 +112,78 @@ export default function AccountsPage() {
           )}
           {accounts.map((account) => (
             <div key={account.id} style={styles.card}>
-              <div>
-                <p style={styles.accountName}>{account.name}</p>
-                <p style={styles.accountType}>{account.type}</p>
-              </div>
-              <p style={styles.balance}>
-                ${parseFloat(account.balance).toFixed(2)}
-              </p>
+              {editingId === account.id ? (
+                <>
+                  <input
+                    style={{ ...styles.input, marginBottom: "8px" }}
+                    value={editName}
+                    onChange={(e) => setEditName(e.target.value)}
+                  />
+                  <select
+                    style={styles.input}
+                    value={editType}
+                    onChange={(e) => setEditType(e.target.value)}
+                  >
+                    <option value="checking">Checking</option>
+                    <option value="savings">Savings</option>
+                    <option value="credit">Credit</option>
+                    <option value="cash">Cash</option>
+                  </select>
+                  <div
+                    style={{ display: "flex", gap: "8px", marginTop: "8px" }}
+                  >
+                    <button
+                      style={styles.button}
+                      onClick={() => {
+                        handleUpdate(account.id, editName, editType);
+                        setEditingId(null);
+                      }}
+                    >
+                      Save
+                    </button>
+                    <button
+                      style={styles.deleteButton}
+                      onClick={() => setEditingId(null)}
+                    >
+                      Cancel
+                    </button>
+                  </div>
+                </>
+              ) : (
+                <>
+                  <div>
+                    <p style={styles.accountName}>{account.name}</p>
+                    <p style={styles.accountType}>{account.type}</p>
+                  </div>
+                  <div
+                    style={{
+                      display: "flex",
+                      alignItems: "center",
+                      gap: "12px",
+                    }}
+                  >
+                    <p style={styles.balance}>
+                      ${parseFloat(account.balance).toFixed(2)}
+                    </p>
+                    <button
+                      style={styles.editButton}
+                      onClick={() => {
+                        setEditingId(account.id);
+                        setEditName(account.name);
+                        setEditType(account.type);
+                      }}
+                    >
+                      Edit
+                    </button>
+                    <button
+                      style={styles.deleteButton}
+                      onClick={() => handleDelete(account.id)}
+                    >
+                      Delete
+                    </button>
+                  </div>
+                </>
+              )}
             </div>
           ))}
         </div>
@@ -162,6 +262,8 @@ const styles: Record<string, React.CSSProperties> = {
     justifyContent: "space-between",
     alignItems: "center",
     boxShadow: "var(--shadow-card)",
+    flexWrap: "wrap",
+    gap: "8px",
   },
   accountName: {
     color: "var(--color-text-light)",
@@ -209,6 +311,26 @@ const styles: Record<string, React.CSSProperties> = {
     boxShadow: "var(--shadow-btn)",
     fontFamily: "var(--font-sans)",
     width: "100%",
+  },
+  editButton: {
+    backgroundColor: "transparent",
+    border: "var(--border-chunky-light)",
+    borderRadius: "var(--radius-sm)",
+    color: "var(--color-text-light)",
+    padding: "6px 12px",
+    cursor: "pointer",
+    fontFamily: "var(--font-sans)",
+    fontSize: "13px",
+  },
+  deleteButton: {
+    backgroundColor: "transparent",
+    border: "2.5px solid var(--color-danger)",
+    borderRadius: "var(--radius-sm)",
+    color: "var(--color-danger)",
+    padding: "6px 12px",
+    cursor: "pointer",
+    fontFamily: "var(--font-sans)",
+    fontSize: "13px",
   },
   empty: {
     color: "var(--color-text-muted)",
