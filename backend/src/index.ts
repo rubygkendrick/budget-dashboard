@@ -4,6 +4,7 @@ import cors from 'cors'
 import dotenv from 'dotenv'
 import authRouter from './routes/auth';
 import accountsRouter from './routes/accounts';
+import categoriesRouter from './routes/categories';
 
 dotenv.config()
 
@@ -14,6 +15,7 @@ app.use(cors())
 app.use(express.json())
 app.use('/api/auth', authRouter);
 app.use('/api/accounts', accountsRouter);
+app.use('/api/categories', categoriesRouter);
 
 app.get('/health', (req, res) => {
   res.json({ status: 'ok', message: 'Budget app backend is running!' })
