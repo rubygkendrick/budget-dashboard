@@ -4,10 +4,11 @@ import LoginPage from "./pages/LoginPage";
 import RegisterPage from "./pages/RegisterPage";
 import DashboardPage from "./pages/DashboardPage";
 import ProfilePage from "./pages/ProfilePage";
-import ProtectedRoute from "./components/ProtectedRoute";
 import AccountsPage from "./pages/AccountsPage";
 import CategoriesPage from "./pages/CategoriesPage";
 import TransactionsPage from "./pages/TransactionsPage";
+import ProtectedRoute from "./components/ProtectedRoute";
+import Layout from "./components/Layout";
 import "./App.css";
 
 function App() {
@@ -21,7 +22,9 @@ function App() {
             path="/dashboard"
             element={
               <ProtectedRoute>
-                <DashboardPage />
+                <Layout>
+                  <DashboardPage />
+                </Layout>
               </ProtectedRoute>
             }
           />
@@ -29,7 +32,9 @@ function App() {
             path="/profile"
             element={
               <ProtectedRoute>
-                <ProfilePage />
+                <Layout>
+                  <ProfilePage />
+                </Layout>
               </ProtectedRoute>
             }
           />
@@ -37,7 +42,9 @@ function App() {
             path="/accounts"
             element={
               <ProtectedRoute>
-                <AccountsPage />
+                <Layout>
+                  <AccountsPage />
+                </Layout>
               </ProtectedRoute>
             }
           />
@@ -45,7 +52,9 @@ function App() {
             path="/categories"
             element={
               <ProtectedRoute>
-                <CategoriesPage />
+                <Layout>
+                  <CategoriesPage />
+                </Layout>
               </ProtectedRoute>
             }
           />
@@ -53,19 +62,13 @@ function App() {
             path="/transactions"
             element={
               <ProtectedRoute>
-                <TransactionsPage />
+                <Layout>
+                  <TransactionsPage />
+                </Layout>
               </ProtectedRoute>
             }
           />
-          <Route
-            path="/transactions"
-            element={
-              <ProtectedRoute>
-                <TransactionsPage />
-              </ProtectedRoute>
-            }
-          />
-          <Route path="*" element={<Navigate to="/login" />} />
+         <Route path="*" element={<Navigate to="/dashboard" />} />
         </Routes>
       </BrowserRouter>
     </AuthProvider>
