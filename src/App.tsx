@@ -9,6 +9,8 @@ import CategoriesPage from "./pages/CategoriesPage";
 import TransactionsPage from "./pages/TransactionsPage";
 import ProtectedRoute from "./components/ProtectedRoute";
 import Layout from "./components/Layout";
+import RecurringPage from "./pages/RecurringPage";
+
 import "./App.css";
 
 function App() {
@@ -68,7 +70,17 @@ function App() {
               </ProtectedRoute>
             }
           />
-         <Route path="*" element={<Navigate to="/dashboard" />} />
+          <Route
+            path="/recurring"
+            element={
+              <ProtectedRoute>
+                <Layout>
+                  <RecurringPage />
+                </Layout>
+              </ProtectedRoute>
+            }
+          />
+          <Route path="*" element={<Navigate to="/dashboard" />} />
         </Routes>
       </BrowserRouter>
     </AuthProvider>
