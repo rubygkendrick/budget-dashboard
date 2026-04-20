@@ -10,6 +10,7 @@ import TransactionsPage from "./pages/TransactionsPage";
 import ProtectedRoute from "./components/ProtectedRoute";
 import Layout from "./components/Layout";
 import RecurringPage from "./pages/RecurringPage";
+import BudgetsPage from "./pages/BudgetsPage";
 
 import "./App.css";
 
@@ -76,6 +77,16 @@ function App() {
               <ProtectedRoute>
                 <Layout>
                   <RecurringPage />
+                </Layout>
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/budgets"
+            element={
+              <ProtectedRoute>
+                <Layout>
+                  <BudgetsPage />
                 </Layout>
               </ProtectedRoute>
             }

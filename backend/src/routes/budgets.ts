@@ -1,4 +1,4 @@
-// Budgets routes — create, read, update, and delete budgets for the logged in user.
+// Budgets routes: create, read, update, and delete budgets for the logged in user.
 import { Router, Response } from 'express';
 import { v4 as uuidv4 } from 'uuid';
 import prisma from '../db';
