@@ -11,6 +11,7 @@ import ProtectedRoute from "./components/ProtectedRoute";
 import Layout from "./components/Layout";
 import RecurringPage from "./pages/RecurringPage";
 import BudgetsPage from "./pages/BudgetsPage";
+import GoalsPage from "./pages/GoalsPage";
 
 import "./App.css";
 
@@ -87,6 +88,16 @@ function App() {
               <ProtectedRoute>
                 <Layout>
                   <BudgetsPage />
+                </Layout>
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/goals"
+            element={
+              <ProtectedRoute>
+                <Layout>
+                  <GoalsPage />
                 </Layout>
               </ProtectedRoute>
             }

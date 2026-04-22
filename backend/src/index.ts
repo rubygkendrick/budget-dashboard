@@ -8,6 +8,7 @@ import categoriesRouter from './routes/categories';
 import transactionsRouter from './routes/transactions';
 import recurringRouter from './routes/recurring';
 import budgetsRouter from './routes/budgets';
+import goalsRouter from './routes/goals';
 
 
 dotenv.config()
@@ -23,6 +24,7 @@ app.use('/api/categories', categoriesRouter);
 app.use('/api/transactions', transactionsRouter);
 app.use('/api/recurring', recurringRouter);
 app.use('/api/budgets', budgetsRouter);
+app.use('/api/goals', goalsRouter);
 
 app.get('/health', (req, res) => {
   res.json({ status: 'ok', message: 'Budget app backend is running!' })
