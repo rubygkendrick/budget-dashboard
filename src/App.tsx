@@ -12,6 +12,7 @@ import Layout from "./components/Layout";
 import RecurringPage from "./pages/RecurringPage";
 import BudgetsPage from "./pages/BudgetsPage";
 import GoalsPage from "./pages/GoalsPage";
+import ReportsPage from "./pages/ReportsPage";
 
 import "./App.css";
 
@@ -98,6 +99,16 @@ function App() {
               <ProtectedRoute>
                 <Layout>
                   <GoalsPage />
+                </Layout>
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/reports"
+            element={
+              <ProtectedRoute>
+                <Layout>
+                  <ReportsPage />
                 </Layout>
               </ProtectedRoute>
             }
