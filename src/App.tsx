@@ -13,6 +13,7 @@ import RecurringPage from "./pages/RecurringPage";
 import BudgetsPage from "./pages/BudgetsPage";
 import GoalsPage from "./pages/GoalsPage";
 import ReportsPage from "./pages/ReportsPage";
+import AIChatPage from "./pages/AIChatPage";
 
 import "./App.css";
 
@@ -109,6 +110,16 @@ function App() {
               <ProtectedRoute>
                 <Layout>
                   <ReportsPage />
+                </Layout>
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/ai-chat"
+            element={
+              <ProtectedRoute>
+                <Layout>
+                  <AIChatPage />
                 </Layout>
               </ProtectedRoute>
             }
