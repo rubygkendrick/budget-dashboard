@@ -1,5 +1,6 @@
-// AI Chat page: placeholder for AI-powered financial assistant. Will connect to Anthropic API when ready.
+// AI Chat page: financial assistant powered by the Anthropic API.
 import { useState } from 'react';
+import { useAuth } from '../context/AuthContext';
 import AppTitle from '../components/AppTitle';
 
 interface Message {
@@ -8,25 +9,48 @@ interface Message {
 }
 
 export default function AIChatPage() {
+  const { token } = useAuth();
   const [messages, setMessages] = useState<Message[]>([
     {
       role: 'assistant',
-      content: 'Hi! I\'m your AI financial assistant. I\'ll be able to answer questions about your spending, budgets, and goals. This feature is coming soon!',
+      content: "Hi! I'm your AI financial assistant. Ask me anything about your spending, budgets, or goals!",
     },
   ]);
   const [input, setInput] = useState('');
+  const [loading, setLoading] = useState(false);
 
-  function handleSend() {
-    if (!input.trim()) return;
+  async function handleSend() {
+    if (!input.trim() || loading) return;
 
     const userMessage: Message = { role: 'user', content: input };
-    const placeholderReply: Message = {
-      role: 'assistant',
-      content: 'AI chat is coming soon! Once connected, I\'ll be able to answer questions like "How much did I spend on food this month?" or "Am I on track with my savings goals?"',
-    };
-
-    setMessages([...messages, userMessage, placeholderReply]);
+    setMessages((prev) => [...prev, userMessage]);
     setInput('');
+    setLoading(true);
+
+    try {
+      const res = await fetch('http://localhost:5000/api/chat', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({ message: input }),
+      });
+
+      const data = await res.json();
+      const assistantMessage: Message = {
+        role: 'assistant',
+        content: data.reply || 'Sorry, I could not generate a response.',
+      };
+      setMessages((prev) => [...prev, assistantMessage]);
+    } catch {
+      setMessages((prev) => [
+        ...prev,
+        { role: 'assistant', content: 'Something went wrong. Please try again.' },
+      ]);
+    } finally {
+      setLoading(false);
+    }
   }
 
   function handleKeyDown(e: React.KeyboardEvent) {
@@ -58,6 +82,11 @@ export default function AIChatPage() {
               {msg.content}
             </div>
           ))}
+          {loading && (
+            <div style={{ ...styles.message, alignSelf: 'flex-start', backgroundColor: 'var(--color-bg-input)', color: 'var(--color-text-muted)' }}>
+              Thinking...
+            </div>
+          )}
         </div>
 
         <div style={styles.inputRow}>
@@ -68,9 +97,10 @@ export default function AIChatPage() {
             value={input}
             onChange={(e) => setInput(e.target.value)}
             onKeyDown={handleKeyDown}
+            disabled={loading}
           />
-          <button style={styles.button} onClick={handleSend}>
-            Send
+          <button style={styles.button} onClick={handleSend} disabled={loading}>
+            {loading ? '...' : 'Send'}
           </button>
         </div>
       </div>
