@@ -87,4 +87,45 @@ router.get('/transfers', requireAuth, async (req: AuthRequest, res: Response) =>
   }
 });
 
+// GET /api/reports/balance-history
+router.get('/balance-history', requireAuth, async (req: AuthRequest, res: Response) => {
+  try {
+    const accounts = await prisma.account.findMany({
+      where: { userId: req.userId! },
+    });
+
+    const transactions = await prisma.transaction.findMany({
+      where: {
+        userId: req.userId!,
+        type: { in: ['income', 'expense'] },
+      },
+      orderBy: { date: 'asc' },
+    });
+
+    const result: Record<string, { date: string; balance: number }[]> = {};
+
+    for (const account of accounts) {
+      let balance = parseFloat(String(account.balance));
+      const accountTxs = transactions.filter((t) => t.accountId === account.id);
+      const history: { date: string; balance: number }[] = [];
+
+      // work backwards from current balance
+      const reversedTxs = [...accountTxs].reverse();
+      history.push({ date: new Date().toISOString().slice(0, 10), balance });
+
+      for (const tx of reversedTxs) {
+        if (tx.type === 'income') balance -= parseFloat(String(tx.amount));
+        if (tx.type === 'expense') balance += parseFloat(String(tx.amount));
+        history.push({ date: tx.date.toISOString().slice(0, 10), balance });
+      }
+
+      result[account.name] = history.reverse();
+    }
+
+    return res.json(result);
+  } catch {
+    return res.status(500).json({ error: 'Server error' });
+  }
+});
+
 export default router;
