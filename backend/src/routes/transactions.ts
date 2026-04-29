@@ -29,6 +29,29 @@ router.post('/', requireAuth, async (req: AuthRequest, res: Response) => {
         date: new Date(date),
       },
     });
+
+    // update account balance based on transaction type
+    if (type === 'expense') {
+      await prisma.account.updateMany({
+        where: { id: accountId, userId: req.userId! },
+        data: { balance: { decrement: parseFloat(amount) } },
+      });
+    } else if (type === 'income') {
+      await prisma.account.updateMany({
+        where: { id: accountId, userId: req.userId! },
+        data: { balance: { increment: parseFloat(amount) } },
+      });
+    } else if (type === 'transfer' && toAccountId) {
+      await prisma.account.updateMany({
+        where: { id: accountId, userId: req.userId! },
+        data: { balance: { decrement: parseFloat(amount) } },
+      });
+      await prisma.account.updateMany({
+        where: { id: toAccountId, userId: req.userId! },
+        data: { balance: { increment: parseFloat(amount) } },
+      });
+    }
+
     return res.status(201).json(transaction);
   } catch {
     return res.status(500).json({ error: 'Server error' });
