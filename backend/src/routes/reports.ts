@@ -119,7 +119,7 @@ router.get('/balance-history', requireAuth, async (req: AuthRequest, res: Respon
         history.push({ date: tx.date.toISOString().slice(0, 10), balance });
       }
 
-      result[account.name] = history.reverse();
+      result[account.name] = history.reverse().sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime());
     }
 
     return res.json(result);
