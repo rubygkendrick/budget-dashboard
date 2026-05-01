@@ -51,11 +51,14 @@ export default function ReportsPage() {
   const [incomeExpenses, setIncomeExpenses] = useState<IncomeExpense[]>([]);
   const [categorySpend, setCategorySpend] = useState<CategorySpend[]>([]);
   const [transfers, setTransfers] = useState<Transfer[]>([]);
+  const [balanceHistory, setBalanceHistory] = useState<
+    Record<string, { date: string; balance: number }[]>
+  >({});
 
   useEffect(() => {
     async function fetchData() {
       try {
-        const [ieRes, catRes, txRes] = await Promise.all([
+        const [ieRes, catRes, txRes, balRes] = await Promise.all([
           fetch("http://localhost:5000/api/reports/income-vs-expenses", {
             headers: { Authorization: `Bearer ${token}` },
           }),
@@ -65,15 +68,20 @@ export default function ReportsPage() {
           fetch("http://localhost:5000/api/reports/transfers", {
             headers: { Authorization: `Bearer ${token}` },
           }),
+          fetch("http://localhost:5000/api/reports/balance-history", {
+            headers: { Authorization: `Bearer ${token}` },
+          }),
         ]);
-        const [ieData, catData, txData] = await Promise.all([
+        const [ieData, catData, txData, balData] = await Promise.all([
           ieRes.json(),
           catRes.json(),
           txRes.json(),
+          balRes.json(),
         ]);
         setIncomeExpenses(ieData);
         setCategorySpend(catData);
         setTransfers(txData);
+        setBalanceHistory(balData);
       } catch {
         console.error("Failed to fetch report data");
       }
@@ -139,10 +147,18 @@ export default function ReportsPage() {
                 labelLine={false}
               >
                 {categorySpend.map((_, index) => (
-                  <Cell key={index} fill={PIE_COLORS[index % PIE_COLORS.length]} />
+                  <Cell
+                    key={index}
+                    fill={PIE_COLORS[index % PIE_COLORS.length]}
+                  />
                 ))}
               </Pie>
-              <Tooltip contentStyle={{ backgroundColor: '#1a1a1a', border: '1px solid #333' }} />
+              <Tooltip
+                contentStyle={{
+                  backgroundColor: "#1a1a1a",
+                  border: "1px solid #333",
+                }}
+              />
               <Legend />
             </PieChart>
           </ResponsiveContainer>
@@ -168,6 +184,49 @@ export default function ReportsPage() {
               <p style={styles.amount}>${parseFloat(t.amount).toFixed(2)}</p>
             </div>
           ))}
+        </div>
+      )}
+      <h2 style={styles.heading}>Account Balance History</h2>
+      {Object.keys(balanceHistory).length === 0 ? (
+        <p style={styles.empty}>No balance history yet.</p>
+      ) : (
+        <div style={styles.chartCard}>
+          <ResponsiveContainer width="100%" height={300}>
+            <LineChart>
+              <CartesianGrid strokeDasharray="3 3" stroke="#333" />
+              <XAxis
+                dataKey="date"
+                stroke="#888"
+                allowDuplicatedCategory={false}
+              />
+              <YAxis stroke="#888" />
+              <Tooltip
+                contentStyle={{
+                  backgroundColor: "#1a1a1a",
+                  border: "1px solid #333",
+                }}
+              />
+              <Legend />
+              {Object.entries(balanceHistory).map(
+                ([accountName, data], index) => (
+                  <Line
+                    key={accountName}
+                    data={data}
+                    type="monotone"
+                    dataKey="balance"
+                    name={accountName}
+                    stroke={
+                      index === 0
+                        ? "var(--color-neon-yellow)"
+                        : "var(--color-neon-green)"
+                    }
+                    strokeWidth={2}
+                    dot={false}
+                  />
+                ),
+              )}
+            </LineChart>
+          </ResponsiveContainer>
         </div>
       )}
     </div>
