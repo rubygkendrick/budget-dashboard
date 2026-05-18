@@ -118,9 +118,40 @@ router.put('/:id', requireAuth, async (req: AuthRequest, res: Response) => {
 // DELETE /api/transactions/:id
 router.delete('/:id', requireAuth, async (req: AuthRequest, res: Response) => {
   try {
+    const transaction = await prisma.transaction.findFirst({
+      where: { id: String(req.params.id), userId: req.userId! },
+    });
+
+    if (!transaction) {
+      return res.status(404).json({ error: 'Transaction not found' });
+    }
+
+    // reverse the balance effect before deleting
+    if (transaction.type === 'expense') {
+      await prisma.account.updateMany({
+        where: { id: transaction.accountId, userId: req.userId! },
+        data: { balance: { increment: parseFloat(String(transaction.amount)) } },
+      });
+    } else if (transaction.type === 'income') {
+      await prisma.account.updateMany({
+        where: { id: transaction.accountId, userId: req.userId! },
+        data: { balance: { decrement: parseFloat(String(transaction.amount)) } },
+      });
+    } else if (transaction.type === 'transfer' && transaction.toAccountId) {
+      await prisma.account.updateMany({
+        where: { id: transaction.accountId, userId: req.userId! },
+        data: { balance: { increment: parseFloat(String(transaction.amount)) } },
+      });
+      await prisma.account.updateMany({
+        where: { id: transaction.toAccountId, userId: req.userId! },
+        data: { balance: { decrement: parseFloat(String(transaction.amount)) } },
+      });
+    }
+
     await prisma.transaction.deleteMany({
       where: { id: String(req.params.id), userId: req.userId! },
     });
+
     return res.status(204).send();
   } catch {
     return res.status(500).json({ error: 'Server error' });
